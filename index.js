@@ -28,27 +28,30 @@ function wordToArt(word) {
 function wordToCoords(word) {
   var angles = []
   var coords = []
+  var manyCoords = []
   for (var i = 0; i < word.length; i++) {
     angles.push(letterToAngle(word[i].toLowerCase()))
   }
   for (var i = 0; i < angles.length; i++) {
-    coords.push(angleToCoords(angles[i]))
+    coords.push(angleToCoord(angles[i]))
   }
-  return coords
+  for (var i = 0; i < coords.length; i++) {
+    manyCoords.push(singleCoordToManyCoords(coords[i], angles[i]))
+  }
+  return manyCoords
 }
 
 function letterToAngle(letter) {
   return (letter.charCodeAt(0) -96) * 6.88
 }
 
-function angleToCoords(angle, xMax = 180, yMax = 180) {
+function angleToCoord(angle, xMax = 180, yMax = 180) {
 
 }
 
-function singleCoordsToManyCoords(coords, number, xMax = 180, yMax = 180) {
+function singleCoordToManyCoords(coords, angle, number = 11, xMax = 180, yMax = 180) {
 
 }
-
 
 function findMidpoint(xMax = 180, yMax = 180) {
   var x = xMax/2
@@ -57,9 +60,9 @@ function findMidpoint(xMax = 180, yMax = 180) {
 }
 
 function coordsToLines(coords) {
-  var lines = []
+  var lines = ""
   for (var i = 0; i < coords.length; i++) {
-    lines.push(coordToLine(coords[i]))
+    lines += coordToLine(coords[i])
   }
   return lines
 }
