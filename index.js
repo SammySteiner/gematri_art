@@ -48,13 +48,14 @@ function letterToAngle(letter) {
 function angleToCoord(angle, xMax = 180, yMax = 180) {
   let midpoint = findMidpoint(xMax, yMax)
   let coord = {x1: 0}
-  if (angle == 90 || angle == 270) {
+  let confinedAngle = angle % 360
+  if (confinedAngle == 90 || confinedAngle == 270) {
     coord.x1 = midpoint.x
     coord.x2 = midpoint.x
     coord.y1 = 0
     coord.y2 = yMax
   } else {
-    let distribution = (midpoint.x/Math.sin((90-angle) * (Math.PI/180)))*Math.sin((angle)* (Math.PI/180))
+    let distribution = (midpoint.x/Math.sin((90-confinedAngle) * (Math.PI/180)))*Math.sin((confinedAngle)* (Math.PI/180))
     coord.x2 = xMax;
     coord.y1 = midpoint.y + distribution;
     coord.y2 = midpoint.y - distribution;
