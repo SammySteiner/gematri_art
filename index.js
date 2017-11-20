@@ -27,16 +27,12 @@ function wordToArt(word) {
 
 function wordToCoords(word) {
   var angles = []
-  var coords = []
   var manyCoords = []
   for (var i = 0; i < word.length; i++) {
     angles.push(letterToAngle(word[i].toLowerCase()))
   }
   for (var i = 0; i < angles.length; i++) {
-    coords.push(angleToCoord(angles[i]))
-  }
-  for (var i = 0; i < coords.length; i++) {
-    manyCoords.push(singleCoordToManyCoords(coords[i], angles[i]))
+    manyCoords.push(angleToManyCoords(angles[i]))
   }
   return manyCoords
 }
@@ -63,10 +59,23 @@ function angleToCoord(angle, xMax = 180, yMax = 180) {
   return coord
 }
 
-function angleToManyCoords(angle, number = 11, xMax = 180, yMax = 180) {
+function angleToManyCoords(angle, number = 18, xMax = 180, yMax = 180) {
   let coord = angleToCoord(angle, xMax, yMax)
-  let midpoint = findMidpoint(xMax, yMax)
-
+  let distribution = xMax/number*2
+  let manyCoords = []
+  for (var i = 0; i < number/2; i++) {
+    let newCoord = Object.assign({}, coord)
+    newCoord.x1 += (distribution * i)
+    newCoord.x2 += (distribution * i)
+    manyCoords.push(newCoord)
+  }
+  for (var i = 0; i < number/2; i++) {
+    let newCoord = Object.assign({}, coord)
+    newCoord.x1 -= (distribution * i)
+    newCoord.x2 -= (distribution * i)
+    manyCoords.push(newCoord)
+  }
+  return manyCoords
 }
 
 function findMidpoint(xMax = 180, yMax = 180) {
@@ -75,10 +84,12 @@ function findMidpoint(xMax = 180, yMax = 180) {
   return {'x': x, 'y': y}
 }
 
-function coordsToLines(coords) {
+function coordsToLines(arrayOfCoordArrays) {
   var lines = ""
-  for (var i = 0; i < coords.length; i++) {
-    lines += coordToLine(coords[i])
+  for (var i = 0; i < arrayOfCoordArrays.length; i++) {
+    for (var j = 0; j < arrayOfCoordArrays[i].length; j++) {
+      lines += coordToLine(arrayOfCoordArrays[i][j])
+    }
   }
   return lines
 }
@@ -88,21 +99,4 @@ function coordToLine(coord) {
 }
 
 
-// coords = {x1: #, y1: #, x2: #, y2: #, color:rgb(#,#,#)}
-
-// OO if i need the xMax and xMin of the svg, that should be a function on the Canvas object
-
-
-
-// when a user hits submit:
-// 1. prevent refresh
-// 2. grab the input
-// 3. assume only one word
-// 4. build svg for word
-// 5. display svg (delete old svg)
-
-// the work. loop over word, look at each letter (convert to lower case) and get an angle from the lookup, convert that into 5 lines on a 100/100 grid, add those to the svg, return the svg with all the lines.
-
-// +. create lookup hash for letter into angle.
-// +. create function to take size of grid, angle of line, number of lines, and return an array of x1/y1/x2/y2 coords.
-// +. check input if one or more words
+// partial solution. solution isn't working right for letters until f and letters after u (not stretching from border to boarder). Letters in the middle of the alphabet aren't getting all 18 lines.
