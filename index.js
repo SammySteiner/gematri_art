@@ -22,7 +22,7 @@ function clearInput() {
 function wordToArt(word) {
   var coordinatesForAllLetters = wordToCoords(word)
   var linesForAllLetters = coordsToLines(coordinatesForAllLetters)
-  document.getElementById('art-svg').innerHTML = linesForAllLetters
+  document.getElementById('art-svg').innerHTML = `<rect x="0" y="0" width="180" height="360" style="fill-opacity:0;stroke-width:1;stroke:rgb(0,0,0)"/>` + linesForAllLetters
 }
 
 function wordToCoords(word) {
@@ -59,22 +59,39 @@ function angleToCoord(angle, xMax = 180, yMax = 180) {
   return coord
 }
 
-function angleToManyCoords(angle, number = 18, xMax = 180, yMax = 180) {
+function angleToManyCoords(angle, desnsity = 20, xMax = 180, yMax = 360) {
   let coord = angleToCoord(angle, xMax, yMax)
-  let distribution = xMax/number*2
   let manyCoords = []
-  for (var i = 0; i < number/2; i++) {
-    let newCoord = Object.assign({}, coord)
-    newCoord.x1 += (distribution * i)
-    newCoord.x2 += (distribution * i)
-    manyCoords.push(newCoord)
+  if (coord.y1 > yMax || coord.y1 < 0) {
+    let offset = yMax/desnsity
+    for (var i = 0; i < desnsity; i++) {
+      let newCoord = Object.assign({}, coord)
+      newCoord.x1 += (offset * i)
+      newCoord.x2 += (offset * i)
+      manyCoords.push(newCoord)
+    }
+    for (var i = 0; i < desnsity; i++) {
+      let newCoord = Object.assign({}, coord)
+      newCoord.x1 -= (offset * i)
+      newCoord.x2 -= (offset * i)
+      manyCoords.push(newCoord)
+    }
+  } else {
+    let offset = yMax/desnsity
+    for (var i = 0; i < desnsity; i++) {
+      let newCoord = Object.assign({}, coord)
+      newCoord.y1 += (offset * i)
+      newCoord.y2 += (offset * i)
+      manyCoords.push(newCoord)
+    }
+    for (var i = 0; i < desnsity; i++) {
+      let newCoord = Object.assign({}, coord)
+      newCoord.y1 -= (offset * i)
+      newCoord.y2 -= (offset * i)
+      manyCoords.push(newCoord)
+    }
   }
-  for (var i = 0; i < number/2; i++) {
-    let newCoord = Object.assign({}, coord)
-    newCoord.x1 -= (distribution * i)
-    newCoord.x2 -= (distribution * i)
-    manyCoords.push(newCoord)
-  }
+
   return manyCoords
 }
 
@@ -95,7 +112,7 @@ function coordsToLines(arrayOfCoordArrays) {
 }
 
 function coordToLine(coord) {
-  return `<line x1="${coord.x1}" y1="${coord.y1}" x2="${coord.x2}" y2="${coord.y2}" style="stroke:rgb(0,0,0);stroke-width:2"/>`
+  return `<line x1="${coord.x1}" y1="${coord.y1}" x2="${coord.x2}" y2="${coord.y2}" style="stroke:rgb(0,0,0);stroke-width:1"/>`
 }
 
 
