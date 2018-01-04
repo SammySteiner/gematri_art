@@ -1,9 +1,9 @@
-class stringParser {
+class StringParser {
   constructor(string) {
     this.string = string
   }
 
-  stringToLetters(){
+  stringToLettersArr(){
     var letters = []
     for (var i = 0; i < this.string.length; i++) {
       letters.push(this.string[i].toLowerCase())
@@ -16,10 +16,10 @@ class stringParser {
     var stringHash = {}
     var newStringArr = []
     stringArr.forEach(function(letter){
-      stringHash[letter] += 1
-    })
-    stringArr.forEach(function(letter){
-      if (stringHash[letter] === 1) {
+      if (stringHash[letter]) {
+        stringHash[letter] += 1
+      } else {
+        stringHash[letter] = 1;
         newStringArr.push(letter)
       }
     })

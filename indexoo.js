@@ -1,23 +1,40 @@
 var printButton = document.getElementById('submit')
 printButton.addEventListener('click', function(event){
   event.preventDefault()
-  var word = getWord()
+  var word = getInputs()
   wordToArt(word)
-  clearInput()
+  clearInputs()
 })
 
 
-function getWord() {
-  return document.getElementById('word').value
+function getInputs() {
+  var word = document.getElementById('word').value
+  var width = parseInt(document.getElementById('width').value)
+  var height = parseInt(document.getElementById('height').value)
+  return {word: word, width: width, height: height}
 }
 
-function clearInput() {
+function clearInputs() {
   document.getElementById('word').value = ""
+  document.getElementById('width').value = ""
+  document.getElementById('height').value = ""
 }
 
-function wordToArt(word) {
+function wordToArt(inputs) {
+  var board = new ArtBoard(inputs.width, inputs.height)
+  var parsedString = new StringParser(inputs.word)
+  var stringArr = parsedString.stringToLettersArr()
+
+  // 1. convert arr to an angle.
+  // 2. use the angle to get two points that pass through the center of my board.
+
+  // 3. use that line to create many coords for lines
+
+  // 4. convert those sets of coords into svg lines
+
   var coordinatesForAllLetters = wordToCoords(word)
   var linesForAllLetters = coordsToLines(coordinatesForAllLetters)
+  // don't forget to interpolate the width and height here
   document.getElementById('art-svg').innerHTML = `<rect x="0" y="0" width="180" height="360" style="fill-opacity:0;stroke-width:1;stroke:rgb(0,0,0)"/>` + linesForAllLetters
 }
 
