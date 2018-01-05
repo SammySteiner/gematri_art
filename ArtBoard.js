@@ -1,5 +1,5 @@
 class ArtBoard {
-  constructor(x = 180, y = 360) {
-    [this.x, this.y] = [x, y]
+  constructor(width = 180, height = 360) {
+    [this.width, this.height] = [width, height]
   }
 }
