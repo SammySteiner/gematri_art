@@ -4,46 +4,55 @@ class Validator {
   }
 
   validateInputs(){
-    var word = validateWord()
-    var width = validateWidth()
-    var height = validateHeight()
-    var density = validateDensity()
-    return {word: word, width: width, height: height, density: density}
+    var word = this.validateWord()
+    var width = this.validateWidth()
+    var height = this.validateHeight()
+    var density = this.validateDensity()
+    if (word && width && height && density) {
+      return {word: word, width: width, height: height, density: density}
+    } else {
+      return false
+    }
   }
 
   validateWord(){
-    this.removeSpaces(this.word)
-    this.removeLineBreaks(this.word)
-    if (this.containsNumber(this.word) || this.containsSpecialCharacter(this.word)) {
+    var input = this.removeSpaces(this.word)
+    var word = this.removeLineBreaks(this.word)
+    if (this.containsNumber(word) || this.containsSpecialCharacter(word) || typeof(word) === "string") {
       alert("Word must not contain numbers or special characters.")
-    }
-    try {
-      var parsedString = new StringParser(inputs.word)
-      var stringArr = parsedString.stringToLettersArr()
-    } catch (e) {
-      alert("You're doing it wrong! Please try again." e.message)
+    } else {
+      return word
     }
   }
 
   validateWidth(){
-    this.removeSpaces(this.word)
-    this.removeLineBreaks(this.word)
-    if (typeOf(this.width) === "number") {
-
+    var input = this.removeSpaces(this.width)
+    var width = parseInt(this.removeLineBreaks(this.width))
+    if (typeof(width) !== "number" || width <= 0 || isNaN(width)) {
+      alert("Width must be a number greater than zero")
+    } else {
+      return width
     }
-  // must be a number, must be greater than 0, must not have any spaces or line breaks
   }
 
   validateHeight(){
-    this.removeSpaces(this.word)
-    this.removeLineBreaks(this.word)
-    // must be a number, must be greater than 0, must not have any spaces or line breaks
+    var input = this.removeSpaces(this.height)
+    var height = parseInt(this.removeLineBreaks(this.height))
+    if (typeof(height) !== "number" || height <= 0 || isNaN(height)) {
+      alert("Height must be a number greater than zero")
+    } else {
+      return height
+    }
   }
 
   validateDensity(){
-    this.removeSpaces(this.word)
-    this.removeLineBreaks(this.word)
-    // must be a number, must be greater than 0, must not have any spaces or line breaks
+    var input = this.removeSpaces(this.density)
+    var density = parseInt(this.removeLineBreaks(this.density))
+    if (typeof(density) !== "number" || density <= 0 || isNaN(density)) {
+      alert("Density must be a number greater than zero")
+    } else {
+      return density
+    }
   }
 
   removeSpaces(input){

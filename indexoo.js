@@ -2,22 +2,24 @@ var printButton = document.getElementById('submit')
 printButton.addEventListener('click', function(event){
   event.preventDefault()
   var inputs = getInputs()
-  let validatedInputs = validateInputs(inputs)
-  wordToArt(validatedInputs)
+  if (validateInputs(inputs)) {
+    let validatedInputs = validateInputs(inputs)
+    wordToArt(validatedInputs)
+  }
   clearInputs()
 })
 
 function getInputs() {
   var word = document.getElementById('word').value
-  var width = parseInt(document.getElementById('width').value)
-  var height = parseInt(document.getElementById('height').value)
-  var density = parseInt(document.getElementById('density').value)
+  var width = document.getElementById('width').value
+  var height = document.getElementById('height').value
+  var density = document.getElementById('density').value
   return {word: word, width: width, height: height, density: density}
 }
 
 function validateInputs(inputs){
   validator = new Validator(inputs)
-  return validator.validateInputs
+  return validator.validateInputs()
 }
 
 function clearInputs() {
