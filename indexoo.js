@@ -2,10 +2,9 @@ var printButton = document.getElementById('submit')
 printButton.addEventListener('click', function(event){
   event.preventDefault()
   var inputs = getInputs()
-  if (validateInputs(inputs)) {
-    wordToArt(inputs)
-    clearInputs()
-  }
+  let validatedInputs = validateInputs(inputs)
+  wordToArt(validatedInputs)
+  clearInputs()
 })
 
 function getInputs() {
