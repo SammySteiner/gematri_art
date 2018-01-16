@@ -1,23 +1,27 @@
 class Validator {
   constructor(inputs) {
-    [this.word, this.width, this.height, this.density] = [inputs.word, inputs.width, inputs.height, inputs.density]
+    [this.text, this.width, this.height, this.density] = [inputs.text, inputs.width, inputs.height, inputs.density]
   }
 
   validateInputs(){
-    var word = this.validateWord()
+    // if this.text contains characters followed by a space followed by characters it's a phrase, otherwise it's a word.
+    var text = this.validateWord()
     var width = this.validateWidth()
     var height = this.validateHeight()
     var density = this.validateDensity()
-    if (word && width && height && density) {
-      return {word: word, width: width, height: height, density: density}
+    if (text && width && height && density) {
+      return {text: text, width: width, height: height, density: density}
     } else {
       return false
     }
   }
 
+  validatePhrase(){
+  }
+
   validateWord(){
-    var input = this.removeSpaces(this.word)
-    var word = this.removeLineBreaks(this.word)
+    var input = this.removeSpaces(this.text)
+    var word = this.removeLineBreaks(input)
     if (this.containsNumber(word) || this.containsSpecialCharacter(word) || typeof(word) !== "string") {
       alert("Word must not contain numbers or special characters.")
     } else {

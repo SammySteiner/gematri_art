@@ -10,11 +10,11 @@ printButton.addEventListener('click', function(event){
 })
 
 function getInputs() {
-  var word = document.getElementById('word').value
+  var text = document.getElementById('text').value
   var width = document.getElementById('width').value
   var height = document.getElementById('height').value
   var density = document.getElementById('density').value
-  return {word: word, width: width, height: height, density: density}
+  return {text: text, width: width, height: height, density: density}
 }
 
 function validateInputs(inputs){
@@ -23,7 +23,7 @@ function validateInputs(inputs){
 }
 
 function clearInputs() {
-  document.getElementById('word').value = ""
+  document.getElementById('text').value = ""
   document.getElementById('width').value = ""
   document.getElementById('height').value = ""
   document.getElementById('density').value = ""
@@ -31,19 +31,21 @@ function clearInputs() {
 
 function wordToArt(inputs) {
   var board = new ArtBoard(inputs.width, inputs.height, inputs.density)
-  var parsedString = new StringParser(inputs.word)
+  var parsedString = new StringParser(inputs.text)
   var stringArr = parsedString.stringToLettersArr()
   var coordinatesForAllLetters = wordToCoords(stringArr, board)
   var linesForAllLetters = coordsToLines(coordinatesForAllLetters)
-  var svg = composeSVG(inputs.word, board, linesForAllLetters)
+  var svg = composeSVG(inputs.text, board, linesForAllLetters)
   document.getElementById('art').innerHTML = svg
 }
 
 function wordToCoords(stringArr, board) {
   var manyCoords = []
   for (var i = 0; i < stringArr.length; i++) {
-    let letterToLinify = new Linifier(stringArr[i], board)
-    let coords = letterToLinify.letterToManyCoords()
+    let letter = new LetterCoder(stringArr[i], board)
+    let letterCoded = letter.letterToCoord()
+    let letterToLinify = new Linifier(letterCoded, board)
+    let coords = letterToLinify.coordToManyCoords()
     manyCoords.push(coords)
   }
   return manyCoords
@@ -63,6 +65,6 @@ function coordToLine(coord) {
   return `<line x1="${coord.x1}" y1="${coord.y1}" x2="${coord.x2}" y2="${coord.y2}" style="stroke:rgb(0,0,0);stroke-width:1"/>`
 }
 
-function composeSVG(word, board, linesForAllLetters){
-  return `<h2>${word}</h2><svg id="art-svg" width="${board.width}" height="${board.height}"><rect x="0" y="0" width="${board.width}" height="${board.height}" style="fill-opacity:0;stroke-width:1;stroke:rgb(0,0,0)"/>` + linesForAllLetters + `</svg>`
+function composeSVG(text, board, linesForAllLetters){
+  return `<h2>${text}</h2><svg id="art-svg" width="${board.width}" height="${board.height}"><rect x="0" y="0" width="${board.width}" height="${board.height}" style="fill-opacity:0;stroke-width:1;stroke:rgb(0,0,0)"/>` + linesForAllLetters + `</svg>`
 }

@@ -3,6 +3,21 @@ class StringParser {
     this.string = string
   }
 
+  parseString(){
+    parsedString = []
+    // if this.string contains a character followed by a space followed by a character it's a phrase, otherwise it's a word
+  }
+
+  stringToWordsArr(){
+    var words = []
+    let phrase = this.string.split(' ')
+    // split on spaces
+    for (var i = 0; i < phrase.length; i++) {
+      words.push(phrase[i])
+    }
+    return words
+  }
+
   stringToLettersArr(){
     var letters = []
     for (var i = 0; i < this.string.length; i++) {
