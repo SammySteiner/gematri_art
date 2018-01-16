@@ -35,7 +35,7 @@ function wordToArt(inputs) {
   var stringArr = parsedString.stringToLettersArr()
   var coordinatesForAllLetters = wordToCoords(stringArr, board)
   var linesForAllLetters = coordsToLines(coordinatesForAllLetters)
-  var svg = composeSVG(board, linesForAllLetters)
+  var svg = composeSVG(inputs.word, board, linesForAllLetters)
   document.getElementById('art').innerHTML = svg
 }
 
@@ -63,6 +63,6 @@ function coordToLine(coord) {
   return `<line x1="${coord.x1}" y1="${coord.y1}" x2="${coord.x2}" y2="${coord.y2}" style="stroke:rgb(0,0,0);stroke-width:1"/>`
 }
 
-function composeSVG(board, linesForAllLetters){
-  return `<svg id="art-svg" width="${board.width}" height="${board.height}"><rect x="0" y="0" width="${board.width}" height="${board.height}" style="fill-opacity:0;stroke-width:1;stroke:rgb(0,0,0)"/>` + linesForAllLetters + `</svg>`
+function composeSVG(word, board, linesForAllLetters){
+  return `<h2>${word}</h2><svg id="art-svg" width="${board.width}" height="${board.height}"><rect x="0" y="0" width="${board.width}" height="${board.height}" style="fill-opacity:0;stroke-width:1;stroke:rgb(0,0,0)"/>` + linesForAllLetters + `</svg>`
 }

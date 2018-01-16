@@ -18,7 +18,7 @@ class Validator {
   validateWord(){
     var input = this.removeSpaces(this.word)
     var word = this.removeLineBreaks(this.word)
-    if (this.containsNumber(word) || this.containsSpecialCharacter(word) || typeof(word) === "string") {
+    if (this.containsNumber(word) || this.containsSpecialCharacter(word) || typeof(word) !== "string") {
       alert("Word must not contain numbers or special characters.")
     } else {
       return word
