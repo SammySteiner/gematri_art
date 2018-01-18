@@ -5,7 +5,7 @@ class Validator {
 
   validateInputs(){
     // if this.text contains characters followed by a space followed by characters it's a phrase, otherwise it's a word.
-    var text = this.validateWord()
+    var text = this.validateText()
     var width = this.validateWidth()
     var height = this.validateHeight()
     var density = this.validateDensity()
@@ -16,11 +16,25 @@ class Validator {
     }
   }
 
-  validatePhrase(){
+  validateText(){
+    if (this.text.trim().split(' ').length > 1) {
+      return this.validatePhrase()
+    } else {
+      return this.validateWord()
+    }
   }
 
-  validateWord(){
-    var input = this.removeSpaces(this.text)
+  validatePhrase(){
+    let wordArr = this.text.trim().split(' ')
+    let validatedWordArr = []
+    for (var i = 0; i < wordArr.length; i++) {
+      validatedWordArr.push(this.validateWord(wordArr[i]))
+    }
+    return validatedWordArr
+  }
+
+  validateWord(word = this.text){
+    var input = this.removeSpaces(word)
     var word = this.removeLineBreaks(input)
     if (this.containsNumber(word) || this.containsSpecialCharacter(word) || typeof(word) !== "string") {
       alert("Word must not contain numbers or special characters.")

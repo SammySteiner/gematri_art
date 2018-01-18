@@ -31,12 +31,43 @@ function clearInputs() {
 
 function wordToArt(inputs) {
   var board = new ArtBoard(inputs.width, inputs.height, inputs.density)
-  var parsedString = new StringParser(inputs.text)
-  var stringArr = parsedString.stringToLettersArr()
-  var coordinatesForAllLetters = wordToCoords(stringArr, board)
+  var stringArr = parseInputs(inputs.text)
+  var coordinatesForAllLetters = stringArrToCoords(stringArr, board)
   var linesForAllLetters = coordsToLines(coordinatesForAllLetters)
   var svg = composeSVG(inputs.text, board, linesForAllLetters)
   document.getElementById('art').innerHTML = svg
+}
+
+function parseInputs(validatedInputs) {
+  var string = new StringParser(validatedInputs)
+  return string.parseString()
+}
+
+function stringArrToCoords(stringArr, board){
+  if (arrIsWord(stringArr)) {
+    return wordToCoords(stringArr, board)
+  } else {
+    return phraseToCoords(stringArr, board)
+  }
+}
+
+function arrIsWord(arr){
+  for (var i = 0; i < arr.length; i++) {
+    return arr[i].length > 1 ? false : arrIsWord(arr.slice(1))
+  }
+  return true
+}
+
+function phraseToCoords(stringArr, board){
+  var manyCoords = []
+  for (var i = 0; i < stringArr.length; i++) {
+    let word = new WordCoder(stringArr[i], board)
+    let wordCoded = word.wordToCoord()
+    let wordToLinify = new Linifier(wordCoded, board)
+    let coords = wordToLinify.coordToManyCoords()
+    manyCoords.push(coords)
+  }
+  return manyCoords
 }
 
 function wordToCoords(stringArr, board) {
@@ -66,5 +97,7 @@ function coordToLine(coord) {
 }
 
 function composeSVG(text, board, linesForAllLetters){
-  return `<h2>${text}</h2><svg id="art-svg" width="${board.width}" height="${board.height}"><rect x="0" y="0" width="${board.width}" height="${board.height}" style="fill-opacity:0;stroke-width:1;stroke:rgb(0,0,0)"/>` + linesForAllLetters + `</svg>`
+  let title = ""
+  typeof(text) === 'string' ? title = text : title = text.join(" ")
+  return `<h2>${title}</h2><svg id="art-svg" width="${board.width}" height="${board.height}"><rect x="0" y="0" width="${board.width}" height="${board.height}" style="fill-opacity:0;stroke-width:1;stroke:rgb(0,0,0)"/>` + linesForAllLetters + `</svg>`
 }

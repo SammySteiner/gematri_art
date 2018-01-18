@@ -4,16 +4,18 @@ class StringParser {
   }
 
   parseString(){
-    parsedString = []
-    // if this.string contains a character followed by a space followed by a character it's a phrase, otherwise it's a word
+    if (!typeof(this.string) === 'string') {
+      return this.stringToWordsArr()
+    } else {
+      return this.stringToLettersArr()
+    }
   }
 
   stringToWordsArr(){
     var words = []
-    let phrase = this.string.split(' ')
-    // split on spaces
+    let phrase = this.string.trim().split(' ')
     for (var i = 0; i < phrase.length; i++) {
-      words.push(phrase[i])
+      words.push(phrase[i].trim())
     }
     return words
   }
@@ -28,7 +30,7 @@ class StringParser {
   }
 
   removeDuplicateLetters(stringArr){
-    var stringHash = {}
+    var stringHash = {' ': 2}
     var newStringArr = []
     stringArr.forEach(function(letter){
       if (stringHash[letter]) {
