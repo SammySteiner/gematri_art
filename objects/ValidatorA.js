@@ -34,18 +34,14 @@ class Validator {
   }
 
   validateWord(word = this.text){
-    // try {
-      var input = this.removeSpaces(word)
-      var word = this.removeLineBreaks(input)
-      if (!this.containsNumber(word) && !this.containsSpecialCharacter(word) && typeof(word) === "string") {
-        return word
-      } else {
-        alert('Words to transform can only cantain alphabetic characters.')
-        return false
-      }
+    var input = this.removeSpaces(word)
+    var word = this.removeLineBreaks(input)
+    if (this.containsNumber(word) || this.containsSpecialCharacter(word) || typeof(word) !== "string") {
+      alert("Word must not contain numbers or special characters.")
+    } else {
+      return word
+    }
   }
-
-
 
   validateWidth(){
     var input = this.removeSpaces(this.width)
